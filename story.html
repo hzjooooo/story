@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simon's Adventure</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation Bar */
+        nav {
+            background-color: #3a86ff;
+            color: white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 20px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #ffbe0b;
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 60vh;
+            background: linear-gradient(135deg, #8ecae6, #219ebc);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: #ffbe0b;
+            color: #333;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: #fb8500;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Story Sections */
+        .story-section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            color: #219ebc;
+        }
+        
+        .story-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .story-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .story-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .story-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .story-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .story-card:hover .story-image img {
+            transform: scale(1.1);
+        }
+        
+        .story-content {
+            padding: 20px;
+        }
+        
+        .story-content h3 {
+            margin-bottom: 10px;
+            color: #023047;
+        }
+        
+        /* Full Story Section */
+        .full-story {
+            background-color: #e9ecef;
+            padding: 100px 0;
+        }
+        
+        .story-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .story-scene {
+            margin-bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .scene-image {
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .scene-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .scene-content {
+            max-width: 700px;
+            text-align: center;
+        }
+        
+        .scene-content h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #023047;
+        }
+        
+        .scene-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .scene-number {
+            background-color: #ffbe0b;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        /* Interactive Elements */
+        .scene-nav {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+        }
+        
+        .scene-nav button {
+            background-color: #219ebc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .scene-nav button:hover {
+            background-color: #023047;
+        }
+        
+        .scene-dots {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: #dee2e6;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .dot.active {
+            background-color: #3a86ff;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #023047;
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #8ecae6;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: #e9ecef;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: #ffbe0b;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #3a86ff;
+                flex-direction: column;
+                padding: 20px;
+                text-align: center;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .story-scene {
+                margin-bottom: 60px;
+            }
+            
+            .scene-image {
+                height: 250px;
+            }
+            
+            .scene-content h2 {
+                font-size: 1.6rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero {
+                height: 70vh;
+            }
+            
+            .story-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .scene-image {
+                height: 200px;
+            }
+            
+            .scene-content h2 {
+                font-size: 1.4rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="nav-container container">
+            <div class="logo">Simon's Adventure</div>
+            <button class="hamburger">☰</button>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#story">Story</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Simon's Magical Adventure</h1>
+            <p>Join Simon on his heartwarming journey of discovery, friendship, and learning valuable life lessons.</p>
+            <a href="#story" class="cta-button">Begin the Adventure</a>
+        </div>
+    </section>
+    
+    <!-- Story Highlights Section -->
+    <section class="story-section">
+        <div class="container">
+            <h2 class="section-title">Adventure Highlights</h2>
+            <div class="story-cards">
+                <div class="story-card">
+                    <div class="story-image">
+                        <img src="/api/placeholder/400/320" alt="Simon preparing for adventure">
+                    </div>
+                    <div class="story-content">
+                        <h3>The Beginning</h3>
+                        <p>Simon packs his backpack, ready for a day of exploration and new discoveries.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <div class="story-image">
+                        <img src="/api/placeholder/400/320" alt="Simon meeting the lost bunny">
+                    </div>
+                    <div class="story-content">
+                        <h3>New Friend</h3>
+                        <p>A chance encounter with a lost bunny leads to an unexpected friendship.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <div class="story-image">
+                        <img src="/api/placeholder/400/320" alt="Simon in the forest">
+                    </div>
+                    <div class="story-content">
+                        <h3>Nature's Beauty</h3>
+                        <p>Simon discovers the wonders of the forest and learns to respect nature.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Full Story Section -->
+    <section class="full-story" id="story">
+        <div class="container">
+            <h2 class="section-title">Simon's Complete Adventure</h2>
+            
+            <div class="scene-dots">
+                <div class="dot active" data-scene="1"></div>
+                <div class="dot" data-scene="2"></div>
+                <div class="dot" data-scene="3"></div>
+                <div class="dot" data-scene="4"></div>
+                <div class="dot" data-scene="5"></div>
+                <div class="dot" data-scene="6"></div>
+                <div class="dot" data-scene="7"></div>
+                <div class="dot" data-scene="8"></div>
+                <div class="dot" data-scene="9"></div>
+                <div class="dot" data-scene="10"></div>
+            </div>
+            
+            <div class="story-container">
+                <div class="story-scene active" id="scene1">
+                    <div class="scene-number">1</div>
+                    <div class="scene-image">
+                        <img src="/api/placeholder/800/400" alt="Simon preparing for adventure">
+                    </div>
+                    <div class="scene-content">
+                        <h2>Simon Prepares for the Adventure</h2>
+                        <p>Simon is a curious child, and today he decided to go on an adventure. He packed his backpack and was ready for a new day of exploring.</p>
+                    </div>
+                </div>
+                
+                <div class="story-scene" id="scene2" style="display: none;">
+                    <div class="scene-number">2</div>
+                    <div class="scene-image">
+                        <img src="/api/placeholder/800/400" alt="Simon meeting the lost bunny">
+                    </div>
+                    <div class="scene-content">
+                        <h2>Simon Meets the Lost Bunny</h2>
+                        <p>In the park, Simon found a lost bunny. The bunny looked sad, so Simon decided to help it find its way home.</p>
+                    </div>
+                </div>
+                
+                <div class="story-scene" id="scene3" style="display: none;">
+                    <div class="scene-number">3</div>
+                    <div class="scene-image">
+                        <img src="/api/placeholder/800/400" alt="Simon and bunny finding their way">
+                    </div>
+                    <div class="scene-content">
+                        <h2>They Work Together to Find the Way</h2>
+                        <p>Simon and the bunny started walking around, looking for a way back home. Simon listened carefully to the sounds around him and discovered a small path. The bunny hopped happily along.</p>
+                    </div>
+                </div>
+                
+                <div class="story-scene" id="scene4" style="display: none;">
+                    <div class="scene-number">4</div>
+                    <div class="scene-image">
+                        <img src="/api/placeholder/800/400" alt="Simon sharing food with bunny">
+                    </div>
+                    <div class="scene-content">
+                        <h2>Simon Decides to Share His Food</h2>
+                        <p>After walking for a while, Simon felt hungry, so he took out his food. Even though he didn't have much, he decided to share it with the bunny.</p>
+                    </div>
+                </div>
+                
+                <div class="story-scene" id="scene5" style="display: none;">
+                    <div class="scene-number">5</div>
+                    <div class="scene-image">
+                        <img src="/api/placeholder/800/400" alt="Simon and bunny in the forest">
+                    </div>
+                    <div class="scene-content">
+                        <h2>They Arrive at the Beautiful Forest</h2>
+                        <p>Simon and the bunny walked into a beautiful forest, with tall trees and fragrant flowers. Simon admired the beauty of nature and decided to be careful to protect the plants and animals.</p>
+                    </div>
+                </div>
+                
+                <div class="story-scene" id="scene6" style="display: none;">
+                    <div class="scene-number">6</div>
+                    <div class="scene-image">
+                        <img src="/api/placeholder/800/400" alt="Simon crossing the creek">
+                    </div>
+                    <div class="scene-content">
+                        <h2>Simon Bravely Crosses the Creek</h2>
+                        <p>Ahead, there was a small creek. Simon felt a bit scared, but he gathered his courage and jumped over the creek, successfully reaching the other side.</p>
+                    </div>
+                </div>
+                
+                <div class="story-scene" id="scene7" style="display: none;">
+                    <div class="scene-number">7</div>
+                    <div class="scene-image">
+                        <img src="/api/placeholder/800/400" alt="Simon helping fallen friend">
+                    </div>
+                    <div class="scene-content">
+                        <h2>He Meets a Fallen Friend</h2>
+                        <p>At an intersection, Simon saw a friend who had fallen down. He immediately ran over to help, picking up the friend and comforting them.</p>
+                    </div>
+                </div>
+                
+                <div class="story-scene" id="scene8" style="display: none;">
+                    <div class="scene-number">8</div>
+                    <div class="scene-image">
+                        <img src="/api/placeholder/800/400" alt="Simon listening to others">
+                    </div>
+                    <div class="scene-content">
+                        <h2>Simon Learns to Listen to Others' Thoughts</h2>
+                        <p>He sat down and talked with the other children, listening to their ideas. Simon learned how important it is to listen to others' thoughts and opinions.</p>
+                    </div>
+                </div>
+                
+                <div class="story-scene" id="scene9" style="display: none;">
+                    <div class="scene-number">9</div>
+                    <div class="scene-image">
+                        <img src="/api/placeholder/800/400" alt="Simon making a new friend">
+                    </div>
+                    <div class="scene-content">
+                        <h2>Simon Makes a New Friend</h2>
+                        <p>At the end of the adventure, Simon met a new friend. They played together and spent a wonderful day having fun.</p>
+                    </div>
+                </div>
+                
+                <div class="story-scene" id="scene10" style="display: none;">
+                    <div class="scene-number">10</div>
+                    <div class="scene-image">
+                        <img src="/api/placeholder/800/400" alt="Simon returning home">
+                    </div>
+                    <div class="scene-content">
+                        <h2>Simon Returns Home and Shares His Adventure</h2>
+                        <p>At the end of the day, Simon returned home and excitedly shared his adventure with his family. He felt very happy and had learned so many new things.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scene-nav">
+                <button id="prevBtn">Previous</button>
+                <button id="nextBtn">Next</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section class="story-section" id="about">
+        <div class="container">
+            <h2 class="section-title">About Simon's Adventure</h2>
+            <div class="story-cards">
+                <div class="story-card">
+                    <div class="story-image">
+                        <img src="/api/placeholder/400/320" alt="About the story">
+                    </div>
+                    <div class="story-content">
+                        <h3>The Story</h3>
+                        <p>Simon's Adventure is a heartwarming tale that teaches children important values through engaging storytelling.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <div class="story-image">
+                        <img src="/api/placeholder/400/320" alt="Values">
+                    </div>
+                    <div class="story-content">
+                        <h3>Values Taught</h3>
+                        <p>Kindness, sharing, courage, helping others, respect for nature, and the importance of friendship.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <div class="story-image">
+                        <img src="/api/placeholder/400/320"
